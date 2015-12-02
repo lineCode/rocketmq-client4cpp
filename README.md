@@ -19,3 +19,6 @@
 * 使用std:unique_ptr, std:shared_ptr代替现有的指针操作.
 * 使用C++11的同步semantic替换当前的kpr库, 重构代码.
 * 增加系统可配执行, 比如log目录, SSL key目录等.
+
+### Development/Deployment Guide
+* 参看RREADME.txt文档
