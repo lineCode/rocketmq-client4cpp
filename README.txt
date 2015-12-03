@@ -1,8 +1,12 @@
-How to build using CMake
+Development/Deployment Guide
 
 0. Dependent Libraries
    openssl
    curl
+
+   For ubuntu users, please refer to the following commands
+   sudo apt-get install libssl-dev
+   sudo apt-get install libcurl4-nss-dev
 
 1. Create directory "build" along with this file.
    mkdir build
@@ -31,6 +35,6 @@ How to build using CMake
    make
    sudo make install
 
-4. sudo cp librocketmq64.so /usr/lib
-   sudo mkdir /usr/include/rocketmq64
-   sudo cp ../include/*.h /usr/include/rocketmq64/
+4. To enable SSL feature, copy docs/cacerts/* to /dianyi/config/RocketMQ/SSL/
+
+5. Create /dianyi/log folder, make sure it's writable to current user.

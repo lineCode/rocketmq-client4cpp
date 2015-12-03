@@ -7,6 +7,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(PRODUCER_FILES Producer.cpp)
 
+set(ASYNC_PRODUCER_FILES AsyncProducer.cpp)
+
 set(PUSH_CONSUMER_FILES PushConsumer.cpp)
 
 set(PULL_CONSUMER_FILES PullConsumer.cpp)
@@ -22,6 +24,8 @@ LINK_LIBRARIES(curl)
 # include_directories(../../include)
 
 add_executable(producer ${PRODUCER_FILES})
+
+add_executable(async_producer ${ASYNC_PRODUCER_FILES})
 
 add_executable(push_consumer ${PUSH_CONSUMER_FILES})
 
