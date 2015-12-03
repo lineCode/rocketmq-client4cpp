@@ -15,12 +15,6 @@
 */
 
 #include "SocketUtil.h"
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <sstream>
-#include <vector>
-#include <iostream>
 
 int SocketInit()
 {
@@ -328,6 +322,7 @@ std::string socketAddress2IPPort( sockaddr addr )
 	return ipport;
 }
 
+#ifdef OPEN_SSL
 void load_certificate(SSL_CTX* ctx, char const * cacert, char const * cakey, char const * trustCALocation) {
     if (SSL_CTX_use_certificate_file(ctx, cacert, SSL_FILETYPE_PEM) <= 0) {
 		Logger::get_logger()->error("Failed to apply public certeificate");
@@ -410,3 +405,4 @@ void shutdownSSL(SSL * ssl) {
 	SSL_shutdown(ssl);
 	SSL_free(ssl);
 }
+#endif

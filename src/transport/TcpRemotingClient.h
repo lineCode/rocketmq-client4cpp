@@ -26,6 +26,10 @@
 #include "ThreadPool.h"
 #include "ThreadPoolWork.h"
 #include "RemoteClientConfig.h"
+#include "TcpTransport.h"
+#include "ScopedLock.h"
+#include "KPRUtil.h"
+#include "ResponseFuture.h"
 
 class TcpTransport;
 class InvokeCallback;

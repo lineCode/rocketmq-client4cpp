@@ -21,6 +21,15 @@
 #include <list>
 #include "Mutex.h"
 #include "SocketUtil.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+#include <errno.h>
+#include <assert.h>
+#include <string>
+#include <iostream>
+#include "SocketUtil.h"
+#include "ScopedLock.h"
 
 const int CLIENT_STATE_UNINIT = 0;
 const int CLIENT_STATE_INITED = 1;
@@ -69,8 +78,10 @@ private:
 	std::string m_serverURL;
 	char * m_pRecvBuf;
 	bool enableSSL;
+#ifdef OPEN_SSL
     SSL_CTX* sslContext;
     SSL* ssl;
+#endif
 };
 
 #endif

@@ -16,17 +16,6 @@
 
 #include "TcpTransport.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <errno.h>
-#include <assert.h>
-#include <string>
-#include <iostream>
-
-#include "SocketUtil.h"
-#include "ScopedLock.h"
-
 const int DEFAULT_SHRINK_COUNT = 32;
 const int DEFAULT_RECV_BUFFER_SIZE = 1024 * 16;
 
@@ -64,8 +53,10 @@ TcpTransport::TcpTransport(std::map<std::string, std::string>& config)
 	m_pRecvBuf = (char*)malloc(m_recvBufSize);
 
 	m_state = (NULL == m_pRecvBuf) ? CLIENT_STATE_UNINIT : CLIENT_STATE_INITED;
+#ifdef OPEN_SSL
     ssl = nullptr;
     sslContext = nullptr;
+#endif
 }
 
 TcpTransport::~TcpTransport()
@@ -84,10 +75,12 @@ TcpTransport::~TcpTransport()
 		m_sfd = INVALID_SOCKET;
 	}
 
+#ifdef OPEN_SSL
     if (enableSSL) {
         shutdownSSL(ssl);
         SSL_CTX_free(sslContext);
     }
+#endif
 
 	SocketUninit();
 }
@@ -125,10 +118,17 @@ int TcpTransport::Connect(const std::string &strServerURL)
 
 	sa.sin_addr.s_addr = inet_addr(strAddr.c_str());
 
+#ifdef OPEN_SSL
     if (enableSSL) {
         sslContext = initializeSSL();
         ssl = SSL_new(sslContext);
     }
+#else
+    if (enableSSL) {
+		std::cout << "SSL feature is enabled, but there is not openssl library to linked against" << std::endl;
+		exit(1);
+	}
+#endif
 
 	m_sfd = (int)socket(AF_INET, SOCK_STREAM, 0);
 
@@ -139,6 +139,7 @@ int TcpTransport::Connect(const std::string &strServerURL)
 	}
 
 	// handshake SSL.
+#ifdef OPEN_SSL
 	if (enableSSL) {
 		SSL_set_fd(ssl, m_sfd);
 
@@ -158,6 +159,7 @@ int TcpTransport::Connect(const std::string &strServerURL)
 		}
 		// Log success of SSL handshake.
 	}
+#endif
 
 	if (MakeSocketNonblocking(m_sfd) == -1)
 	{
@@ -247,7 +249,11 @@ int TcpTransport::SendOneMsg(const char* pBuffer, size_t len, int nTimeOut)
 	{
 		ssize_t ret = 0;
 		if (enableSSL) {
+#ifdef OPEN_SSL
 			ret = SSL_write(ssl, pBuffer + pos, len);
+#else
+			std::cout << "SSL is enabled but no openssl library to link against" << std::endl;
+#endif
 		} else {
 			ret = send(m_sfd, pBuffer + pos, len, 0);
 		}
@@ -309,7 +315,9 @@ ssize_t TcpTransport::RecvMsg()
 {
 	ssize_t ret = 0;
 	if (enableSSL) {
+#ifdef OPEN_SSL
 		ret = SSL_read(ssl, m_pRecvBuf + m_recvBufUsed, m_recvBufSize - m_recvBufUsed);
+#endif
 	} else {
 		ret = recv(m_sfd, m_pRecvBuf + m_recvBufUsed, m_recvBufSize - m_recvBufUsed, 0);
 	}
@@ -370,7 +378,7 @@ uint32_t TcpTransport::GetMsgSize(const char * pBuf)
 	uint32_t len = 0;
 	memcpy(&len, pBuf, sizeof(int));
 
-	//ÓÉÓÚ³¤¶ÈÖµ²»°üº¬×ÔÉí£¬ËùÒÔÐèÒª+4
+	//ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òª+4
 	return ntohl(len)+4;
 }
 

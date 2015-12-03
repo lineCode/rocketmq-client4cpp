@@ -5,7 +5,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 find_library(OPEN_SSL NAMES ssl)
 find_library(CURL NAMES curl)
-find_library(Z_LIB z)
+find_library(Z_LIB NAMES z)
 
 add_subdirectory(libs/jsoncpp-src-0.5.0)
 add_subdirectory(libs/spdlog)
@@ -94,6 +94,7 @@ add_library(rocketmq SHARED ${SOURCE_FILES})
 target_link_libraries(rocketmq jsoncpp)
 
 if (OPEN_SSL)
+    add_definitions(-DOPEN_SSL)
     LINK_LIBRARIES(ssl)
     message(STATUS "Found openssl")
 endif ()

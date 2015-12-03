@@ -16,12 +16,6 @@
 */
 
 #include "TcpRemotingClient.h"
-#include "TcpTransport.h"
-#include "ThreadPool.h"
-#include "ScopedLock.h"
-#include "KPRUtil.h"
-#include "ResponseFuture.h"
-#include "SocketUtil.h"
 
 
 ProcessDataWork::ProcessDataWork(TcpRemotingClient* pClient,std::string* pData)
@@ -253,7 +247,7 @@ TcpTransport* TcpRemotingClient::GetAndCreateTransport( const std::string& addr 
 
 void TcpRemotingClient::HandleTimerEvent(unsigned long long tm)
 {
-	//TODO ╤╗й╠фВ
+	//TODO О©╫О©╫й╠О©╫О©╫
 }
 
 void TcpRemotingClient::ProcessData( std::string* pData )
@@ -274,7 +268,7 @@ void TcpRemotingClient::ProcessData( std::string* pData )
 		}
 		else
 		{
-			//TODO ц╩ур╣╫ё╛╤╙фЗ,пХр╙╪гб╪хуж╬
+			//TODO ц╩О©╫р╣О©╫О©╫О©╫О©╫О©╫О©╫О©╫,О©╫О©╫р╙О©╫О©╫б╪О©╫О©╫ж╬
 			delete pData;
 			delete cmd;
 			return;
@@ -333,18 +327,18 @@ RemotingCommand* TcpRemotingClient::invokeSyncImpl( TcpTransport* pTts,
 	RemotingCommand* responseCommand = responseFuture->waitResponse(timeoutMillis);
 	if (responseCommand ==NULL)
 	{
-		// ╥╒кмгКгСЁи╧╕ё╛╤ах║с╕╢ПЁ╛й╠
+		// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╧О©╫О©╫О©╫О©╫О©╫х║с╕О©╫О©╫й╠
 		if (ret == 0)
 		{
 			
 		}
-		else// ╥╒кмгКгСй╖╟э
+		else// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫й╖О©╫О©╫
 		{
 		}
 	}
 
-	// хГ╧Ш╥╒ожё╛к╣цВЁ╛й╠ё╛кЫрт©ирттзуБюОи╬ЁЩ
-	// хГ╧Шц╩сп╥╒ожё╛к╣цВря╬╜тз╢╕юМакё╛дгц╢╬мтз╢╕юМ╣д╣ь╥╫и╬ЁЩ
+	// О©╫О©╫О©╫О©╫О©╫О©╫жёО©╫к╣О©╫О©╫О©╫О©╫й╠О©╫О©╫О©╫О©╫О©╫т©О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╬О©╫О©╫
+	// О©╫О©╫О©╫ц╩О©╫п╥О©╫О©╫жёО©╫к╣О©╫О©╫О©╫я╬О©╫О©╫з╢О©╫О©╫О©╫О©╫кёО©╫О©╫О©╫ц╢О©╫О©╫О©╫з╢О©╫О©╫О©╫д╣ь╥О©╫и╬О©╫О©╫
 	{
 		kpr::ScopedLock<kpr::Mutex> lock(m_responseTableMutex);
 		std::map<int,ResponseFuture*>::iterator it = m_responseTable.find(request->getOpaque());
@@ -441,7 +435,7 @@ void TcpRemotingClient::processResponseCommand(RemotingCommand* pCmd)
 		}
 	}
 
-	// м╛╡╫╣ВсцпХр╙м╗ж╙╣х╢Щуъё╛рЛ╡╫╣ВсцпХр╙╣Всц╩ь╣В╨╞йЩ
+	// м╛О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫р╙м╗ж╙О©╫х╢О©╫О©╫ъёО©╫О©╫Л╡╫О©╫О©╫О©╫О©╫О©╫О©╫р╙О©╫О©╫О©╫ц╩ь╣О©╫О©╫О©╫О©╫О©╫
 	if (res)
 	{
 		res->putResponse(pCmd);

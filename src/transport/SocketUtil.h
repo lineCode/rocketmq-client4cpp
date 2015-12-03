@@ -45,12 +45,19 @@
 #include "MixAll.h"
 #include <string>
 #include "Logger.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <sstream>
+#include <vector>
+#include <iostream>
 
 // openssl includes
+#ifdef OPEN_SSL
 #include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
-
+#endif
 
 #define NET_ERROR errno
 #define SOCKET_ERROR -1
@@ -86,14 +93,12 @@ std::string getLocalAddress();
 unsigned long long h2nll(unsigned long long v);
 unsigned long long n2hll(unsigned long long v);
 
+#ifdef OPEN_SSL
 void load_certificate(SSL_CTX* ctx, char* ca_cert, char* ca_key, char* trust_ca_location);
-
 SSL_CTX* initializeSSL();
-
 void destroySSL();
-
 void show_certificate(SSL* ssl);
-
 void shutdownSSL(SSL* ssl);
+#endif
 
 #endif
