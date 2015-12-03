@@ -21,4 +21,4 @@
 * 增加系统可配执行, 比如log目录, SSL key目录等.
 
 ### Development/Deployment Guide
-* 参看RREADME.txt文档
+* 参看README.txt文档
