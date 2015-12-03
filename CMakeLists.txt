@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.2)
 project(rocketmq)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -std=c++11")
 set(CMAKE_VERBOSE_MAKEFILE ON)
+
+find_library(OPEN_SSL NAMES ssl)
+find_library(CURL NAMES curl)
+find_library(Z_LIB z)
+
 add_subdirectory(libs/jsoncpp-src-0.5.0)
 add_subdirectory(libs/spdlog)
 
@@ -203,11 +208,25 @@ set(SOURCE_FILES
         src/Logger.h)
 
 add_library(rocketmq SHARED ${SOURCE_FILES})
+
 target_link_libraries(rocketmq jsoncpp)
 
-LINK_LIBRARIES(ssl)
-LINK_LIBRARIES(curl)
-LINK_LIBRARIES(spdlog)
+if (OPEN_SSL)
+    LINK_LIBRARIES(ssl)
+    message(STATUS "Found openssl")
+endif ()
+
+if(CURL)
+    LINK_LIBRARIES(curl)
+    message(STATUS "Found curl")
+endif()
+
+if(Z_LIB)
+    LINK_LIBRARIES(z)
+    message(STATUS "Found zlib")
+endif()
+
+target_link_libraries(rocketmq spdlog)
 
 install(TARGETS rocketmq
         LIBRARY DESTINATION /usr/lib)
