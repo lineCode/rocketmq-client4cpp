@@ -1,8 +1,8 @@
 Development/Deployment Guide
 
 0. Dependent Libraries
-   openssl
-   curl
+   openssl optional, SSL feature relies on it.
+   curl required.
 
    For ubuntu users, please refer to the following commands
    sudo apt-get install libssl-dev
@@ -35,6 +35,7 @@ Development/Deployment Guide
    make
    sudo make install
 
-4. To enable SSL feature, copy docs/cacerts/* to /dianyi/config/RocketMQ/SSL/
+4. To disable SSL feature, delete this line in CMakeLists.txt "add_definitions(-DOPEN_SSL)"
+   To enable SSL feature, copy docs/cacerts/* to /dianyi/config/RocketMQ/SSL/
 
 5. Create /dianyi/log folder, make sure it's writable to current user.
