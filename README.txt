@@ -35,7 +35,10 @@ Development/Deployment Guide
    make
    sudo make install
 
-4. To disable SSL feature, delete this line in CMakeLists.txt "add_definitions(-DOPEN_SSL)"
+4. To disable SSL feature:
+   1) Delete this line in CMakeLists.txt "add_definitions(-DOPEN_SSL)"
+   2) Delete this line in example/simple/CMakeFiles.txt "LINK_LIBRARIES(ssl)"
+
    To enable SSL feature, copy docs/cacerts/* to /dianyi/config/RocketMQ/SSL/
 
 5. Create /dianyi/log folder, make sure it's writable to current user.
