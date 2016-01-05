@@ -229,7 +229,11 @@ TcpTransport* TcpRemotingClient::GetAndCreateTransport( const std::string& addr 
 		}
 
 		std::map<std::string ,std::string> config;
+
+#ifdef OPEN_SSL
 		config["tcp.transport.enableSSL"] = "true";
+#endif
+
 		tts = new TcpTransport(config);
 		if (tts->Connect(addr)!=CLIENT_ERROR_SUCCESS)
 		{
